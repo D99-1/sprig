@@ -12,34 +12,67 @@ const player = "p"
 const green = "s"
 const grey = "g"
 const red = "r"
-const white = "w"
-const blue = "b"
-const purple = "u"
-const gold = "o"
 var gameOver = false
 var ingameLevel = 1
 var timer = 10;
 let countdownInterval;
 
+const melody = tune`
+150: B5~150 + A5~150 + G5~150 + F5~150 + E5~150,
+150: B5^150 + A5^150 + G5^150 + F5^150 + E5^150,
+150: B5-150 + A5-150 + G5-150 + F5-150 + E5-150,
+150: B5/150 + A5/150 + G5/150 + F5/150 + E5/150,
+150: D5~150 + C5~150 + B4~150 + A4~150 + G4~150,
+150: D5^150 + C5^150 + B4^150 + A4^150 + G4^150,
+150: D5-150 + C5-150 + B4-150 + A4-150 + G4-150,
+150: D5/150 + C5/150 + B4/150 + A4/150 + G4/150,
+150: F4~150 + E4~150 + D4~150 + C4~150,
+150: F4^150 + E4^150 + D4^150 + C4^150,
+150: F4-150 + E4-150 + D4-150 + C4-150,
+150: F4/150 + E4/150 + D4/150 + C4/150,
+150: B5~150 + A5~150 + G5~150 + F5~150 + E5~150,
+150: B5^150 + A5^150 + G5^150 + F5^150 + E5^150,
+150: B5-150 + A5-150 + G5-150 + F5-150 + E5-150,
+150: B5/150 + A5/150 + G5/150 + F5/150 + E5/150,
+150: D5~150 + C5~150 + B4~150 + A4~150 + G4~150,
+150: D5^150 + C5^150 + B4^150 + A4^150 + G4^150,
+150: D5-150 + C5-150 + G4-150 + A4-150 + B4-150,
+150: D5/150 + C5/150 + B4/150 + A4/150 + G4/150,
+150: F4~150 + E4~150 + D4~150 + C4~150,
+150: F4^150 + E4^150 + D4^150 + C4^150,
+150: F4-150 + E4-150 + D4-150 + C4-150,
+150: F4/150 + E4/150 + D4/150 + C4/150,
+150: B5~150 + A5~150 + G5~150 + F5~150 + E5~150,
+150: B5^150 + A5^150 + G5^150 + F5^150 + E5^150,
+150: B5-150 + A5-150 + G5-150 + F5-150 + E5-150,
+150: B5/150 + A5/150 + G5/150 + F5/150 + E5/150,
+150: B4~150 + D5~150 + C5~150 + A4~150 + G4~150,
+150: G4^150 + A4^150 + B4^150 + C5^150 + D5^150,
+150: D5-150 + C5-150 + B4-150 + G4-150 + A4-150,
+150: D5/150 + C5/150 + B4/150 + A4/150 + G4/150`
+
+const playback = playTune(melody, Infinity)
+
+
 setLegend(
-  [player, bitmap`
+  [ player, bitmap`
 ................
-................
-................
-................
-................
-.......00.......
-.......00.......
-......9CC9......
-......0990......
-......D99D......
-.......LL.......
-................
-................
-................
-................
-................`],
-  [green, bitmap`
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+..999CCCCCC999..
+..999CCCCCC999..
+..999CCCCCC999..
+..000999999000..
+..000999999000..
+..DDD999999DDD..
+.....LLLLLL.....
+.....LLLLLL.....
+................` ],
+  [green,bitmap`
 2222222222222222
 2444444444444442
 2444444444444442
@@ -73,7 +106,7 @@ setLegend(
 2333333333333332
 2333333333333332
 2222222222222222`],
-  [grey, bitmap`
+  [grey,bitmap`
 2222222222222222
 2111111111111112
 2111111111111112
@@ -89,240 +122,55 @@ setLegend(
 2111111111111112
 2111111111111112
 2111111111111112
-2222222222222222`],
-  [white,bitmap`
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222
-2222222222222222`],
-  [blue,bitmap`
-2222222222222222
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2222222222222222`],
-  [purple,bitmap`
-2222222222222222
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2222222222222222`],
-  [gold,bitmap`
-2222222222222222
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
 2222222222222222`],
 )
 
-setSolids([green, red])
+setSolids([ green, red ])
 
 let level = 0
 const levels = [
   map`
-ssswwwbbb
-ssswwwbbb
-ssswwwbbb
-wwwwwwwww
-uuuwwwooo
-uuuwwwooo
-uuuwwwooo`,
-  map`
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-............`
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+.............`
 ]
 
 setMap(levels[level])
 
 setPushables({
-  [player]: []
+  [ player ]: []
 })
 
-  addSprite(4, 2, player);
+addSprite(5,4,player);
 
-  addText("Difficulty", {
-    x: 5,
-    y: 8,
-    color: `.`
-  })
+      const randomX = Math.floor(Math.random() * 13);
+      const randomY = Math.floor(Math.random() * 9);
+      addSprite(randomX, randomY, red)
+      const randomX1 = Math.floor(Math.random() * 13);
+      const randomY1 = Math.floor(Math.random() * 9);
+      addSprite(randomX1, randomY1, red)
+      const randomX3 = Math.floor(Math.random() * 13);
+      const randomY3 = Math.floor(Math.random() * 9);
+      clearTile(randomX3,randomY3)
+      addSprite(randomX3, randomY3, grey)
+      addSprite(randomX3, randomY3, green)
+addText("Level "+ingameLevel, { 
+  x: 2,
+  y: 14,
+  color: color`.`
+})
 
-  addText("1", {
-    x: 3,
-    y: 3,
-    color: color`0`
-  })
-
-  addText("2", {
-    x: 16,
-    y: 3,
-    color: color`0`
-  })
-
-  addText("3", {
-    x: 3,
-    y: 12,
-    color: color`0`
-  })
-
-  addText("4", {
-    x: 16,
-    y: 12,
-    color: color`0`
-  })
-
-  onInput("w", () => {
-    getFirst(player).y -= 1
-    movementHandler()
-  })
-
-  onInput("a", () => {
-    getFirst(player).x -= 1
-    movementHandler()
-
-  })
-
-  onInput("s", () => {
-    getFirst(player).y += 1
-    movementHandler()
-
-  })
-
-  onInput("d", () => {
-    getFirst(player).x += 1
-    movementHandler()
-
-  })
-
-  onInput("i", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y -= 1
-    movementHandler()
-
-  })
-
-  onInput("j", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y += 1
-    movementHandler()
-
-  })
-
-  onInput("k", () => {
-    getFirst(player).x += 1
-    getFirst(player).y += 1
-    movementHandler()
-
-  })
-
-  onInput("l", () => {
-    getFirst(player).x += 1
-    getFirst(player).y -= 1
-    movementHandler()
-
-  })
-
-function movementHandler(){
-if(level == 0){
-  checkSelection()
-} else if(level == 1){
-  checkGreen()
-}
-}
-
-
-  function level1(){
-
-  clearText()
-    
-  addSprite(5, 4, player);
-
-  const randomX = Math.floor(Math.random() * 12);
-  const randomY = Math.floor(Math.random() * 9);
-  addSprite(randomX, randomY, red)
-  const randomX1 = Math.floor(Math.random() * 12);
-  const randomY1 = Math.floor(Math.random() * 9);
-  addSprite(randomX1, randomY1, red)
-  const randomX3 = Math.floor(Math.random() * 12);
-  const randomY3 = Math.floor(Math.random() * 9);
-  clearTile(randomX3, randomY3)
-  addSprite(randomX3, randomY3, grey)
-  addSprite(randomX3, randomY3, green)
-  addText("Level " + ingameLevel, {
-    x: 1,
-    y: 15,
-    color: color`.`
-  })
-  }
-
-  function checkSelection() {
-    const playerSprite = getFirst(player);
-    const greenSprites = getAll(green)
-    for (const greenSprite of greenSprites) {
-      if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y) {
-        level = 1;
-        setMap(levels[level])
-        level1()
-      }
-    }
-  }
-
-  function checkGreen() {
-    const playerSprite = getFirst(player);
-    const greenSprite = getFirst(green);
-    const redSprites = getAll(red)
+function checkGreen() {
+  const playerSprite = getFirst(player);
+  const greenSprite = getFirst(green);
+  const redSprites = getAll(red)
     if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y && gameOver === false) {
       resetTimer()
       greenSprite.remove()
@@ -330,77 +178,122 @@ if(level == 0){
         redSprite.remove()
       }
       ingameLevel += 1
-      for (let i = 0; i < ingameLevel * 2 - 2; i++) {
-        const randomX = Math.floor(Math.random() * 12);
-        const randomY = Math.floor(Math.random() * 9);
-        addSprite(randomX, randomY, red)
+      for(let i = 0;i < ingameLevel * 2 - 2;i++){
+      const randomX = Math.floor(Math.random() * 13);
+      const randomY = Math.floor(Math.random() * 9);
+      addSprite(randomX, randomY, red)
       }
 
-      const randomX = Math.floor(Math.random() * 12);
+      const randomX = Math.floor(Math.random() * 13);
       const randomY = Math.floor(Math.random() * 9);
-      clearTile(randomX, randomY)
+      clearTile(randomX,randomY)
       addSprite(randomX, randomY, grey)
       addSprite(randomX, randomY, green)
 
-      if (playerSprite.x === randomX && playerSprite.y === randomY) {
+      if(playerSprite.x === randomX && playerSprite.y === randomY){
         getFirst(player).x = 5
         getFirst(player).y = 4
       }
       const playerSprite1 = getFirst(player)
-      clearTile(playerSprite1.x, playerSprite1.y)
-      addSprite(playerSprite1.x, playerSprite1.y, grey)
-      addSprite(playerSprite1.x, playerSprite1.y, player)
-      addText("Level " + ingameLevel, {
-        x: 1,
-        y: 15,
-        color: color`.`
-      })
+      clearTile(playerSprite1.x,playerSprite1.y)
+      addSprite(playerSprite1.x,playerSprite1.y, grey)
+      addSprite(playerSprite1.x,playerSprite1.y, player)
+      addText("Level "+ingameLevel, { 
+  x: 2,
+  y: 14,
+  color: color`.`
+})
       startTimer()
-
-
+      
+      
     }
-    for (const redSprite of redSprites) {
-      if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
-        resetTimer()
-        clearText()
-        addText("Game Over! Lvl " + ingameLevel, {
-          x: 1,
-          y: 15,
-          color: color`.`
-        })
-        gameOver = true;
-      }
+  for (const redSprite of redSprites) {
+    if(playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false){
+      resetTimer()
+      clearText()
+      addText("Game Over! Lvl "+ingameLevel, { 
+  x: 2,
+  y: 14,
+  color: color`.`
+})
+      gameOver = true;
+  }
+  }
+}
+
+function startTimer() {
+  timer = 10;
+  addText(timer.toString(), { 
+  x: 15,
+  y: 14,
+  color: color`.`
+})
+  countdownInterval = setInterval(() => {
+    timer--;
+      addText("0"+timer.toString(), { 
+  x: 15,
+  y: 14,
+  color: color`.`
+})
+    if (timer === 0) {
+      clearInterval(countdownInterval);
+           clearText()
+      addText("Game OVER! Lvl "+ingameLevel, { 
+  x: 2,
+  y: 14,
+  color: color`.`
+})
+      gameOver = true;
     }
-  }
+  }, 1000);
+}
 
-  function startTimer() {
-    timer = 10;
-    addText(timer.toString(), {
-      x: 17,
-      y: 15,
-      color: color`.`
-    })
-    countdownInterval = setInterval(() => {
-      timer--;
-      addText("0" + timer.toString(), {
-        x: 17,
-        y: 15,
-        color: color`.`
-      })
-      if (timer === 0) {
-        clearInterval(countdownInterval);
-        clearText()
-        addText("Game OVER! Lvl " + ingameLevel, {
-          x: 1,
-          y: 15,
-          color: color`.`
-        })
-        gameOver = true;
-      }
-    }, 1000);
-  }
+function resetTimer() {
+  clearInterval(countdownInterval);
+  timer = 10;
+}
 
-  function resetTimer() {
-    clearInterval(countdownInterval);
-    timer = 10;
-  }
+onInput("w", () => {
+  getFirst(player).y -= 1
+  checkGreen()
+})
+
+
+onInput("a", () => {
+  getFirst(player).x -= 1
+  checkGreen()
+})
+
+onInput("s", () => {
+  getFirst(player).y += 1
+  checkGreen()
+})
+
+onInput("d", () => {
+  getFirst(player).x += 1
+  checkGreen()
+})
+
+onInput("i", () => {
+  getFirst(player).x -= 1
+  getFirst(player).y -= 1
+  checkGreen()
+})
+
+onInput("j", () => {
+  getFirst(player).x -= 1
+  getFirst(player).y += 1
+  checkGreen()
+})
+
+onInput("k", () => {
+  getFirst(player).x += 1
+  getFirst(player).y += 1
+  checkGreen()
+})
+
+onInput("l", () => {
+  getFirst(player).x += 1
+  getFirst(player).y -= 1
+  checkGreen()
+})
