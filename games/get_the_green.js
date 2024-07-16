@@ -18,7 +18,7 @@ var timer = 10;
 let countdownInterval;
 
 setLegend(
-  [ player, bitmap`
+  [player, bitmap`
 ................
 ................
 ................
@@ -34,8 +34,8 @@ setLegend(
 ................
 ................
 ................
-................` ],
-  [green,bitmap`
+................`],
+  [green, bitmap`
 2222222222222222
 2444444444444442
 2444444444444442
@@ -69,7 +69,7 @@ setLegend(
 2333333333333332
 2333333333333332
 2222222222222222`],
-  [grey,bitmap`
+  [grey, bitmap`
 2222222222222222
 2111111111111112
 2111111111111112
@@ -88,52 +88,62 @@ setLegend(
 2222222222222222`],
 )
 
-setSolids([ green, red ])
+setSolids([green, red])
 
 let level = 0
 const levels = [
   map`
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-ggggggggggg
-...........`
+sss......
+sss......
+sss......
+....p....
+.........
+.........
+.........`,
+  map`
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+gggggggggggg
+............`
 ]
 
 setMap(levels[level])
 
 setPushables({
-  [ player ]: []
+  [player]: []
 })
 
-addSprite(5,4,player);
+if (level == 1) {
 
-      const randomX = Math.floor(Math.random() * 11);
-      const randomY = Math.floor(Math.random() * 9);
-      addSprite(randomX, randomY, red)
-      const randomX1 = Math.floor(Math.random() * 11);
-      const randomY1 = Math.floor(Math.random() * 9);
-      addSprite(randomX1, randomY1, red)
-      const randomX3 = Math.floor(Math.random() * 11);
-      const randomY3 = Math.floor(Math.random() * 9);
-      clearTile(randomX3,randomY3)
-      addSprite(randomX3, randomY3, grey)
-      addSprite(randomX3, randomY3, green)
-addText("Level "+ingameLevel, { 
-  x: 2,
-  y: 15,
-  color: color`.`
-})
+  addSprite(5, 4, player);
 
-function checkGreen() {
-  const playerSprite = getFirst(player);
-  const greenSprite = getFirst(green);
-  const redSprites = getAll(red)
+  const randomX = Math.floor(Math.random() * 12);
+  const randomY = Math.floor(Math.random() * 9);
+  addSprite(randomX, randomY, red)
+  const randomX1 = Math.floor(Math.random() * 12);
+  const randomY1 = Math.floor(Math.random() * 9);
+  addSprite(randomX1, randomY1, red)
+  const randomX3 = Math.floor(Math.random() * 12);
+  const randomY3 = Math.floor(Math.random() * 9);
+  clearTile(randomX3, randomY3)
+  addSprite(randomX3, randomY3, grey)
+  addSprite(randomX3, randomY3, green)
+  addText("Level " + ingameLevel, {
+    x: 1,
+    y: 15,
+    color: color`.`
+  })
+
+  function checkGreen() {
+    const playerSprite = getFirst(player);
+    const greenSprite = getFirst(green);
+    const redSprites = getAll(red)
     if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y && gameOver === false) {
       resetTimer()
       greenSprite.remove()
@@ -141,122 +151,200 @@ function checkGreen() {
         redSprite.remove()
       }
       ingameLevel += 1
-      for(let i = 0;i < ingameLevel * 2 - 2;i++){
-      const randomX = Math.floor(Math.random() * 11);
-      const randomY = Math.floor(Math.random() * 9);
-      addSprite(randomX, randomY, red)
+      for (let i = 0; i < ingameLevel * 2 - 2; i++) {
+        const randomX = Math.floor(Math.random() * 12);
+        const randomY = Math.floor(Math.random() * 9);
+        addSprite(randomX, randomY, red)
       }
 
-      const randomX = Math.floor(Math.random() * 11);
+      const randomX = Math.floor(Math.random() * 12);
       const randomY = Math.floor(Math.random() * 9);
-      clearTile(randomX,randomY)
+      clearTile(randomX, randomY)
       addSprite(randomX, randomY, grey)
       addSprite(randomX, randomY, green)
 
-      if(playerSprite.x === randomX && playerSprite.y === randomY){
+      if (playerSprite.x === randomX && playerSprite.y === randomY) {
         getFirst(player).x = 5
         getFirst(player).y = 4
       }
       const playerSprite1 = getFirst(player)
-      clearTile(playerSprite1.x,playerSprite1.y)
-      addSprite(playerSprite1.x,playerSprite1.y, grey)
-      addSprite(playerSprite1.x,playerSprite1.y, player)
-      addText("Level "+ingameLevel, { 
-  x: 2,
-  y: 15,
-  color: color`.`
-})
+      clearTile(playerSprite1.x, playerSprite1.y)
+      addSprite(playerSprite1.x, playerSprite1.y, grey)
+      addSprite(playerSprite1.x, playerSprite1.y, player)
+      addText("Level " + ingameLevel, {
+        x: 1,
+        y: 15,
+        color: color`.`
+      })
       startTimer()
-      
-      
+
+
     }
-  for (const redSprite of redSprites) {
-    if(playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false){
-      resetTimer()
-      clearText()
-      addText("Game Over! Lvl "+ingameLevel, { 
-  x: 2,
-  y: 15,
-  color: color`.`
-})
-      gameOver = true;
-  }
-  }
-}
-
-function startTimer() {
-  timer = 10;
-  addText(timer.toString(), { 
-  x: 15,
-  y: 15,
-  color: color`.`
-})
-  countdownInterval = setInterval(() => {
-    timer--;
-      addText("0"+timer.toString(), { 
-  x: 15,
-  y: 15,
-  color: color`.`
-})
-    if (timer === 0) {
-      clearInterval(countdownInterval);
-           clearText()
-      addText("Game OVER! Lvl "+ingameLevel, { 
-  x: 2,
-  y: 15,
-  color: color`.`
-})
-      gameOver = true;
+    for (const redSprite of redSprites) {
+      if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
+        resetTimer()
+        clearText()
+        addText("Game Over! Lvl " + ingameLevel, {
+          x: 1,
+          y: 15,
+          color: color`.`
+        })
+        gameOver = true;
+      }
     }
-  }, 1000);
+  }
+
+  function startTimer() {
+    timer = 10;
+    addText(timer.toString(), {
+      x: 17,
+      y: 15,
+      color: color`.`
+    })
+    countdownInterval = setInterval(() => {
+      timer--;
+      addText("0" + timer.toString(), {
+        x: 17,
+        y: 15,
+        color: color`.`
+      })
+      if (timer === 0) {
+        clearInterval(countdownInterval);
+        clearText()
+        addText("Game OVER! Lvl " + ingameLevel, {
+          x: 1,
+          y: 15,
+          color: color`.`
+        })
+        gameOver = true;
+      }
+    }, 1000);
+  }
+
+  function resetTimer() {
+    clearInterval(countdownInterval);
+    timer = 10;
+  }
+
+
+  onInput("w", () => {
+    getFirst(player).y -= 1
+    checkGreen()
+  })
+
+
+  onInput("a", () => {
+    getFirst(player).x -= 1
+    checkGreen()
+  })
+
+  onInput("s", () => {
+    getFirst(player).y += 1
+    checkGreen()
+  })
+
+  onInput("d", () => {
+    getFirst(player).x += 1
+    checkGreen()
+  })
+
+  onInput("i", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y -= 1
+    checkGreen()
+  })
+
+  onInput("j", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y += 1
+    checkGreen()
+  })
+
+  onInput("k", () => {
+    getFirst(player).x += 1
+    getFirst(player).y += 1
+    checkGreen()
+  })
+
+  onInput("l", () => {
+    getFirst(player).x += 1
+    getFirst(player).y -= 1
+    checkGreen()
+  })
+
+
+
+} else if (level == 0) {
+
+  addText("Level\nSelect", {
+    x: 7,
+    y: 2,
+    color: `.`
+  })
+
+  function checkSelection() {
+    const playerSprite = getFirst(player);
+    const greenSprites = getAll(green)
+    for (const greenSprite of greenSprites) {
+      if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y) {
+        level = 1;
+        setMap(levels[level])
+        console.log(level)
+      }
+    }
+  }
+
+
+
+  onInput("w", () => {
+    getFirst(player).y -= 1
+    checkSelection()
+  })
+
+
+  onInput("a", () => {
+    getFirst(player).x -= 1
+    checkSelection()
+
+  })
+
+  onInput("s", () => {
+    getFirst(player).y += 1
+    checkSelection()
+
+  })
+
+  onInput("d", () => {
+    getFirst(player).x += 1
+    checkSelection()
+
+  })
+
+  onInput("i", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y -= 1
+    checkSelection()
+
+  })
+
+  onInput("j", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y += 1
+    checkSelection()
+
+  })
+
+  onInput("k", () => {
+    getFirst(player).x += 1
+    getFirst(player).y += 1
+    checkSelection()
+
+  })
+
+  onInput("l", () => {
+    getFirst(player).x += 1
+    getFirst(player).y -= 1
+    checkSelection()
+
+  })
 }
-
-function resetTimer() {
-  clearInterval(countdownInterval);
-  timer = 10;
-}
-
-onInput("w", () => {
-  getFirst(player).y -= 1
-  checkGreen()
-})
-
-
-onInput("a", () => {
-  getFirst(player).x -= 1
-  checkGreen()
-})
-
-onInput("s", () => {
-  getFirst(player).y += 1
-  checkGreen()
-})
-
-onInput("d", () => {
-  getFirst(player).x += 1
-  checkGreen()
-})
-
-onInput("i", () => {
-  getFirst(player).x -= 1
-  getFirst(player).y -= 1
-  checkGreen()
-})
-
-onInput("j", () => {
-  getFirst(player).x -= 1
-  getFirst(player).y += 1
-  checkGreen()
-})
-
-onInput("k", () => {
-  getFirst(player).x += 1
-  getFirst(player).y += 1
-  checkGreen()
-})
-
-onInput("l", () => {
-  getFirst(player).x += 1
-  getFirst(player).y -= 1
-  checkGreen()
-})
