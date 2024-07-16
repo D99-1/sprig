@@ -12,6 +12,10 @@ const player = "p"
 const green = "s"
 const grey = "g"
 const red = "r"
+const white = "w"
+const blue = "b"
+const purple = "u"
+const gold = "o"
 var gameOver = false
 var ingameLevel = 1
 var timer = 10;
@@ -86,6 +90,74 @@ setLegend(
 2111111111111112
 2111111111111112
 2222222222222222`],
+  [white,bitmap`
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222`],
+  [blue,bitmap`
+2222222222222222
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2222222222222222`],
+  [purple,bitmap`
+2222222222222222
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2222222222222222`],
+  [gold,bitmap`
+2222222222222222
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2222222222222222`],
 )
 
 setSolids([green, red])
@@ -93,13 +165,13 @@ setSolids([green, red])
 let level = 0
 const levels = [
   map`
-sss......
-sss......
-sss......
-....p....
-.........
-.........
-.........`,
+ssswwwbbb
+ssswwwbbb
+ssswwwbbb
+wwwwwwwww
+uuuwwwooo
+uuuwwwooo
+uuuwwwooo`,
   map`
 gggggggggggg
 gggggggggggg
@@ -119,8 +191,102 @@ setPushables({
   [player]: []
 })
 
-if (level == 1) {
+  addSprite(4, 2, player);
 
+  addText("Difficulty", {
+    x: 5,
+    y: 8,
+    color: `.`
+  })
+
+  addText("1", {
+    x: 3,
+    y: 3,
+    color: color`0`
+  })
+
+  addText("2", {
+    x: 16,
+    y: 3,
+    color: color`0`
+  })
+
+  addText("3", {
+    x: 3,
+    y: 12,
+    color: color`0`
+  })
+
+  addText("4", {
+    x: 16,
+    y: 12,
+    color: color`0`
+  })
+
+  onInput("w", () => {
+    getFirst(player).y -= 1
+    movementHandler()
+  })
+
+  onInput("a", () => {
+    getFirst(player).x -= 1
+    movementHandler()
+
+  })
+
+  onInput("s", () => {
+    getFirst(player).y += 1
+    movementHandler()
+
+  })
+
+  onInput("d", () => {
+    getFirst(player).x += 1
+    movementHandler()
+
+  })
+
+  onInput("i", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y -= 1
+    movementHandler()
+
+  })
+
+  onInput("j", () => {
+    getFirst(player).x -= 1
+    getFirst(player).y += 1
+    movementHandler()
+
+  })
+
+  onInput("k", () => {
+    getFirst(player).x += 1
+    getFirst(player).y += 1
+    movementHandler()
+
+  })
+
+  onInput("l", () => {
+    getFirst(player).x += 1
+    getFirst(player).y -= 1
+    movementHandler()
+
+  })
+
+function movementHandler(){
+if(level == 0){
+  checkSelection()
+} else if(level == 1){
+  checkGreen()
+}
+}
+
+
+  function level1(){
+
+  clearText()
+    
   addSprite(5, 4, player);
 
   const randomX = Math.floor(Math.random() * 12);
@@ -139,6 +305,19 @@ if (level == 1) {
     y: 15,
     color: color`.`
   })
+  }
+
+  function checkSelection() {
+    const playerSprite = getFirst(player);
+    const greenSprites = getAll(green)
+    for (const greenSprite of greenSprites) {
+      if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y) {
+        level = 1;
+        setMap(levels[level])
+        level1()
+      }
+    }
+  }
 
   function checkGreen() {
     const playerSprite = getFirst(player);
@@ -225,126 +404,3 @@ if (level == 1) {
     clearInterval(countdownInterval);
     timer = 10;
   }
-
-
-  onInput("w", () => {
-    getFirst(player).y -= 1
-    checkGreen()
-  })
-
-
-  onInput("a", () => {
-    getFirst(player).x -= 1
-    checkGreen()
-  })
-
-  onInput("s", () => {
-    getFirst(player).y += 1
-    checkGreen()
-  })
-
-  onInput("d", () => {
-    getFirst(player).x += 1
-    checkGreen()
-  })
-
-  onInput("i", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y -= 1
-    checkGreen()
-  })
-
-  onInput("j", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y += 1
-    checkGreen()
-  })
-
-  onInput("k", () => {
-    getFirst(player).x += 1
-    getFirst(player).y += 1
-    checkGreen()
-  })
-
-  onInput("l", () => {
-    getFirst(player).x += 1
-    getFirst(player).y -= 1
-    checkGreen()
-  })
-
-
-
-} else if (level == 0) {
-
-  addText("Level\nSelect", {
-    x: 7,
-    y: 2,
-    color: `.`
-  })
-
-  function checkSelection() {
-    const playerSprite = getFirst(player);
-    const greenSprites = getAll(green)
-    for (const greenSprite of greenSprites) {
-      if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y) {
-        level = 1;
-        setMap(levels[level])
-        console.log(level)
-      }
-    }
-  }
-
-
-
-  onInput("w", () => {
-    getFirst(player).y -= 1
-    checkSelection()
-  })
-
-
-  onInput("a", () => {
-    getFirst(player).x -= 1
-    checkSelection()
-
-  })
-
-  onInput("s", () => {
-    getFirst(player).y += 1
-    checkSelection()
-
-  })
-
-  onInput("d", () => {
-    getFirst(player).x += 1
-    checkSelection()
-
-  })
-
-  onInput("i", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y -= 1
-    checkSelection()
-
-  })
-
-  onInput("j", () => {
-    getFirst(player).x -= 1
-    getFirst(player).y += 1
-    checkSelection()
-
-  })
-
-  onInput("k", () => {
-    getFirst(player).x += 1
-    getFirst(player).y += 1
-    checkSelection()
-
-  })
-
-  onInput("l", () => {
-    getFirst(player).x += 1
-    getFirst(player).y -= 1
-    checkSelection()
-
-  })
-}
