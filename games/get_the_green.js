@@ -8,8 +8,12 @@ https://sprig.hackclub.com/gallery/getting_started
 @addedOn: 2024-06-28
 */
 
+
+// NOTE: Make sure player is not on row being cleared
+
 // Settings
 const level_4_swap_interval_seconds = 1
+// 
 
 const player = "p"
 const green = "s"
@@ -23,27 +27,28 @@ const brown = "n"
 var gameOver = false
 var ingameLevel = 1
 var timer = 10;
+let stimer;
 let countdownInterval;
 let swapInterval;
 
 setLegend(
-  [player, bitmap`
+  [ player, bitmap`
 ................
-................
-................
-................
-................
-.......00.......
-.......00.......
-......9CC9......
-......0990......
-......D99D......
-.......LL.......
-................
-................
-................
-................
-................`],
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+.....000000.....
+..999CCCCCC999..
+..999CCCCCC999..
+..999CCCCCC999..
+..000999999000..
+..000999999000..
+..DDD999999DDD..
+.....LLLLLL.....
+.....LLLLLL.....
+................` ],
   [green, bitmap`
 2222222222222222
 2444444444444442
@@ -246,6 +251,7 @@ setPushables({
   [player]: []
 })
 
+  function setup(){
   addSprite(4, 2, player);
 
   addText("Difficulty", {
@@ -277,6 +283,9 @@ setPushables({
     y: 12,
     color: color`0`
   })
+}
+
+  setup()
 
   onInput("w", () => {
     getFirst(player).y -= 1
@@ -330,7 +339,14 @@ setPushables({
   })
 
 function movementHandler(){
-if(level == 0){
+
+if(gameOver == true){
+  gameOver = false;
+  clearText()
+  level = 0
+  setMap(levels[level])
+  setup()
+} else if(level == 0){
   checkSelection()
 } else if(level == 1){
   checkGreen()
@@ -515,7 +531,7 @@ if(level == 0){
         y: 14,
         color: color`.`
       })
-      startTimer()
+      startTimer(10)
 
 
     }
@@ -523,6 +539,14 @@ if(level == 0){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer()
         clearText()
+      for(let i = 0; i < 13; i++){
+        clearTile(i,0)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 1,
+          color: color`.`
+        })
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -569,7 +593,7 @@ if(level == 0){
         y: 14,
         color: color`.`
       })
-      startTimer()
+      startTimer(10)
 
 
     }
@@ -577,6 +601,14 @@ if(level == 0){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer()
         clearText()
+              for(let i = 0; i < 13; i++){
+        clearTile(i,0)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 1,
+          color: color`.`
+        })
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -631,6 +663,14 @@ if(level == 0){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer(5)
         clearText()
+              for(let i = 0; i < 13; i++){
+        clearTile(i,0)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 1,
+          color: color`.`
+        })
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -696,6 +736,14 @@ if(level == 0){
         resetTimer(5)
         resetSwapTimer()
         clearText()
+              for(let i = 0; i < 13; i++){
+        clearTile(i,0)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 1,
+          color: color`.`
+        })
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -731,6 +779,14 @@ if(level == 0){
       if (timer === 0) {
         clearInterval(countdownInterval);
         clearText()
+              for(let i = 0; i < 13; i++){
+        clearTile(i,0)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 1,
+          color: color`.`
+        })
         addText("Game OVER! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
