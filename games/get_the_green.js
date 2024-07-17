@@ -8,6 +8,9 @@ https://sprig.hackclub.com/gallery/getting_started
 @addedOn: 2024-06-28
 */
 
+// Settings
+const level_4_swap_interval_seconds = 1
+
 const player = "p"
 const green = "s"
 const grey = "g"
@@ -16,10 +19,12 @@ const white = "w"
 const blue = "b"
 const purple = "u"
 const gold = "o"
+const brown = "n"
 var gameOver = false
 var ingameLevel = 1
 var timer = 10;
 let countdownInterval;
+let swapInterval;
 
 setLegend(
   [player, bitmap`
@@ -56,7 +61,7 @@ setLegend(
 2444444444444442
 2444444444444442
 2222222222222222`],
-    [blue,bitmap`
+  [blue,bitmap`
 2222222222222222
 2777777777777772
 2777777777777772
@@ -106,6 +111,23 @@ setLegend(
 2FFFFFFFFFFFFFF2
 2FFFFFFFFFFFFFF2
 2FFFFFFFFFFFFFF2
+2222222222222222`],
+  [brown, bitmap`
+2222222222222222
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
+2CCCCCCCCCCCCCC2
 2222222222222222`],
   [red, bitmap`
 2222222222222222
@@ -160,7 +182,7 @@ setLegend(
 2222222222222222`],
 )
 
-setSolids([green, red, blue])
+setSolids([green, red, blue, purple, gold, brown])
 
 let level = 0
 const levels = [
@@ -182,6 +204,17 @@ uuuwwwooo`,
 .ggggggggggg.
 .ggggggggggg.
 .ggggggggggg.
+.............`,
+  map`
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
 .............`,
   map`
 ggggggggggggg
@@ -305,6 +338,8 @@ if(level == 0){
   checkBlue()
 }else if(level == 3){
   checkPurple()
+}else if(level == 4){
+  checkGold()
 }
 }
 
@@ -355,7 +390,7 @@ if(level == 0){
   })
   }
 
-function level3(){
+  function level3(){
     clearText()
     addSprite(5, 4, player);
 
@@ -376,6 +411,35 @@ function level3(){
     color: color`.`
   })
 }
+
+  function level4(){
+        clearText()
+    addSprite(5, 4, player);
+
+  const randomX = Math.floor(Math.random() * 13);
+  const randomY = Math.floor(Math.random() * 9);
+  addSprite(randomX, randomY, red)
+  const randomX1 = Math.floor(Math.random() * 13);
+  const randomY1 = Math.floor(Math.random() * 9);
+  addSprite(randomX1, randomY1, red)
+  const randomX2 = Math.floor(Math.random() * 13);
+  const randomY2 = Math.floor(Math.random() * 9);
+  addSprite(randomX2, randomY2, brown)
+  const randomX4 = Math.floor(Math.random() * 13);
+  const randomY4 = Math.floor(Math.random() * 9);
+  addSprite(randomX4, randomY4, brown)
+  const randomX3 = Math.floor(Math.random() * 13);
+  const randomY3 = Math.floor(Math.random() * 9);
+  clearTile(randomX3, randomY3)
+  addSprite(randomX3, randomY3, grey)
+  addSprite(randomX3, randomY3, gold)
+  addText("Level " + ingameLevel, {
+    x: 1,
+    y: 14,
+    color: color`.`
+  })
+    swapTimer(level_4_swap_interval_seconds)
+  }
   
 
   function checkSelection() {
@@ -402,6 +466,14 @@ function level3(){
         level = 3;
         setMap(levels[level])
         level3()
+      }
+    }
+            const goldSprites = getAll(gold)
+    for (const goldSprite of goldSprites) {
+      if (playerSprite.x === goldSprite.x && playerSprite.y === goldSprite.y) {
+        level = 4;
+        setMap(levels[level])
+        level4()
       }
     }
     
@@ -569,6 +641,70 @@ function level3(){
     }
   }
 
+  function checkGold(){
+    const playerSprite = getFirst(player);
+    const goldSprite = getFirst(gold);
+    const redSprites = getAll(red)
+    const brownSprites = getAll(brown)
+    if (playerSprite.x === goldSprite.x && playerSprite.y === goldSprite.y && gameOver === false) {
+      resetTimer()
+      goldSprite.remove()
+      for (const redSprite of redSprites) {
+        redSprite.remove()
+      }
+      for(const brownSprite of brownSprites){
+        brownSprite.remove()
+      }
+      ingameLevel += 1
+      for (let i = 0; i < ingameLevel * 2; i++) {
+        const randomX = Math.floor((Math.random() * 13));
+        const randomY = Math.floor(Math.random() * 9);
+        addSprite(randomX, randomY, red)
+        const randomX2 = Math.floor((Math.random() * 13));
+        const randomY2 = Math.floor(Math.random() * 9);
+        addSprite(randomX2, randomY2, brown)
+      }
+      
+
+      const randomX = Math.floor((Math.random() * 13));
+      const randomY = Math.floor(Math.random() * 9);
+      clearTile(randomX, randomY)
+      addSprite(randomX, randomY, grey)
+      addSprite(randomX, randomY, gold)
+
+      if (playerSprite.x === randomX && playerSprite.y === randomY) {
+        getFirst(player).x = 5
+        getFirst(player).y = 4
+      }
+      const playerSprite1 = getFirst(player)
+      clearTile(playerSprite1.x, playerSprite1.y)
+      addSprite(playerSprite1.x, playerSprite1.y, grey)
+      addSprite(playerSprite1.x, playerSprite1.y, player)
+      addText("Level " + ingameLevel, {
+        x: 1,
+        y: 14,
+        color: color`.`
+      })
+      resetSwapTimer()
+      startTimer(5)
+      swapTimer(level_4_swap_interval_seconds)
+
+
+    }
+    for (const redSprite of redSprites) {
+      if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
+        resetTimer(5)
+        resetSwapTimer()
+        clearText()
+        addText("Game Over! Lvl " + ingameLevel, {
+          x: 1,
+          y: 14,
+          color: color`.`
+        })
+        gameOver = true;
+      }
+    }
+  }
 
   function startTimer(s) {
     timer = s;
@@ -609,3 +745,29 @@ function level3(){
     clearInterval(countdownInterval);
     timer = s;
   }
+
+  function swapTimer(s){
+    stimer = s;
+    swapInterval = setInterval(() => {
+      stimer--;
+      if (stimer === 0) {
+        clearInterval(swapInterval);
+        const redSprites = getAll(red)
+        const brownSprites = getAll(brown)
+        for(const brownSprite of brownSprites){
+          addSprite(brownSprite.x,brownSprite.y,red)
+          brownSprite.remove()
+        }
+        for(const redSprite of redSprites){
+          addSprite(redSprite.x,redSprite.y,brown)
+          redSprite.remove()
+        }
+        swapTimer(s)
+      }
+    }, 1000);
+  }
+
+    function resetSwapTimer(s) {
+    clearInterval(swapInterval);
+  }
+
