@@ -56,6 +56,57 @@ setLegend(
 2444444444444442
 2444444444444442
 2222222222222222`],
+    [blue,bitmap`
+2222222222222222
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2777777777777772
+2222222222222222`],
+  [purple,bitmap`
+2222222222222222
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2HHHHHHHHHHHHHH2
+2222222222222222`],
+  [gold,bitmap`
+2222222222222222
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2FFFFFFFFFFFFFF2
+2222222222222222`],
   [red, bitmap`
 2222222222222222
 2333333333333332
@@ -107,60 +158,9 @@ setLegend(
 2222222222222222
 2222222222222222
 2222222222222222`],
-  [blue,bitmap`
-2222222222222222
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2777777777777772
-2222222222222222`],
-  [purple,bitmap`
-2222222222222222
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2HHHHHHHHHHHHHH2
-2222222222222222`],
-  [gold,bitmap`
-2222222222222222
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2FFFFFFFFFFFFFF2
-2222222222222222`],
 )
 
-setSolids([green, red])
+setSolids([green, red, blue])
 
 let level = 0
 const levels = [
@@ -290,6 +290,8 @@ if(level == 0){
   checkSelection()
 } else if(level == 1){
   checkGreen()
+} else if(level == 2){
+  checkBlue()
 }
 }
 
@@ -332,7 +334,7 @@ if(level == 0){
   const randomY3 = Math.floor(Math.random() * 9);
   clearTile(randomX3, randomY3)
   addSprite(randomX3, randomY3, grey)
-  addSprite(randomX3, randomY3, green)
+  addSprite(randomX3, randomY3, blue)
   addText("Level " + ingameLevel, {
     x: 1,
     y: 14,
@@ -383,6 +385,60 @@ if(level == 0){
       clearTile(randomX, randomY)
       addSprite(randomX, randomY, grey)
       addSprite(randomX, randomY, green)
+
+      if (playerSprite.x === randomX && playerSprite.y === randomY) {
+        getFirst(player).x = 5
+        getFirst(player).y = 4
+      }
+      const playerSprite1 = getFirst(player)
+      clearTile(playerSprite1.x, playerSprite1.y)
+      addSprite(playerSprite1.x, playerSprite1.y, grey)
+      addSprite(playerSprite1.x, playerSprite1.y, player)
+      addText("Level " + ingameLevel, {
+        x: 1,
+        y: 14,
+        color: color`.`
+      })
+      startTimer()
+
+
+    }
+    for (const redSprite of redSprites) {
+      if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
+        resetTimer()
+        clearText()
+        addText("Game Over! Lvl " + ingameLevel, {
+          x: 1,
+          y: 14,
+          color: color`.`
+        })
+        gameOver = true;
+      }
+    }
+  }
+
+  function checkBlue() {
+    const playerSprite = getFirst(player);
+    const blueSprite = getFirst(blue);
+    const redSprites = getAll(red)
+    if (playerSprite.x === blueSprite.x && playerSprite.y === blueSprite.y && gameOver === false) {
+      resetTimer()
+      blueSprite.remove()
+      for (const redSprite of redSprites) {
+        redSprite.remove()
+      }
+      ingameLevel += 1
+      for (let i = 0; i < ingameLevel * 2; i++) {
+        const randomX = Math.floor((Math.random() * 13));
+        const randomY = Math.floor(Math.random() * 9);
+        addSprite(randomX, randomY, red)
+      }
+
+      const randomX = Math.floor((Math.random() * 13));
+      const randomY = Math.floor(Math.random() * 9);
+      clearTile(randomX, randomY)
+      addSprite(randomX, randomY, grey)
+      addSprite(randomX, randomY, blue)
 
       if (playerSprite.x === randomX && playerSprite.y === randomY) {
         getFirst(player).x = 5
