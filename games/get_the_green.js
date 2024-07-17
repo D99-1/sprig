@@ -173,16 +173,27 @@ uuuwwwooo
 uuuwwwooo
 uuuwwwooo`,
   map`
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-gggggggggggg
-............`
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.ggggggggggg.
+.............`,
+  map`
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+ggggggggggggg
+.............`
 ]
 
 setMap(levels[level])
@@ -289,23 +300,46 @@ if(level == 0){
     
   addSprite(5, 4, player);
 
-  const randomX = Math.floor(Math.random() * 12);
+  const randomX = Math.floor((Math.random() * 11)+1);
   const randomY = Math.floor(Math.random() * 9);
   addSprite(randomX, randomY, red)
-  const randomX1 = Math.floor(Math.random() * 12);
+  const randomX1 = Math.floor((Math.random() * 11)+1);
   const randomY1 = Math.floor(Math.random() * 9);
   addSprite(randomX1, randomY1, red)
-  const randomX3 = Math.floor(Math.random() * 12);
+  const randomX3 = Math.floor((Math.random() * 11)+1);
   const randomY3 = Math.floor(Math.random() * 9);
   clearTile(randomX3, randomY3)
   addSprite(randomX3, randomY3, grey)
   addSprite(randomX3, randomY3, green)
   addText("Level " + ingameLevel, {
     x: 1,
-    y: 15,
+    y: 14,
     color: color`.`
   })
   }
+
+  function level2(){
+    clearText()
+    addSprite(5, 4, player);
+
+      const randomX = Math.floor(Math.random() * 13);
+  const randomY = Math.floor(Math.random() * 9);
+  addSprite(randomX, randomY, red)
+  const randomX1 = Math.floor(Math.random() * 13);
+  const randomY1 = Math.floor(Math.random() * 9);
+  addSprite(randomX1, randomY1, red)
+  const randomX3 = Math.floor(Math.random() * 13);
+  const randomY3 = Math.floor(Math.random() * 9);
+  clearTile(randomX3, randomY3)
+  addSprite(randomX3, randomY3, grey)
+  addSprite(randomX3, randomY3, green)
+  addText("Level " + ingameLevel, {
+    x: 1,
+    y: 14,
+    color: color`.`
+  })
+  }
+  
 
   function checkSelection() {
     const playerSprite = getFirst(player);
@@ -315,6 +349,14 @@ if(level == 0){
         level = 1;
         setMap(levels[level])
         level1()
+      }
+    }
+    const blueSprites = getAll(blue)
+    for (const blueSprite of blueSprites) {
+      if (playerSprite.x === blueSprite.x && playerSprite.y === blueSprite.y) {
+        level = 2;
+        setMap(levels[level])
+        level2()
       }
     }
   }
@@ -331,12 +373,12 @@ if(level == 0){
       }
       ingameLevel += 1
       for (let i = 0; i < ingameLevel * 2 - 2; i++) {
-        const randomX = Math.floor(Math.random() * 12);
+        const randomX = Math.floor((Math.random() * 11)+1);
         const randomY = Math.floor(Math.random() * 9);
         addSprite(randomX, randomY, red)
       }
 
-      const randomX = Math.floor(Math.random() * 12);
+      const randomX = Math.floor((Math.random() * 11)+1);
       const randomY = Math.floor(Math.random() * 9);
       clearTile(randomX, randomY)
       addSprite(randomX, randomY, grey)
@@ -352,7 +394,7 @@ if(level == 0){
       addSprite(playerSprite1.x, playerSprite1.y, player)
       addText("Level " + ingameLevel, {
         x: 1,
-        y: 15,
+        y: 14,
         color: color`.`
       })
       startTimer()
@@ -365,7 +407,7 @@ if(level == 0){
         clearText()
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
-          y: 15,
+          y: 14,
           color: color`.`
         })
         gameOver = true;
@@ -377,14 +419,14 @@ if(level == 0){
     timer = 10;
     addText(timer.toString(), {
       x: 17,
-      y: 15,
+      y: 14,
       color: color`.`
     })
     countdownInterval = setInterval(() => {
       timer--;
       addText("0" + timer.toString(), {
         x: 17,
-        y: 15,
+        y: 14,
         color: color`.`
       })
       if (timer === 0) {
@@ -392,7 +434,7 @@ if(level == 0){
         clearText()
         addText("Game OVER! Lvl " + ingameLevel, {
           x: 1,
-          y: 15,
+          y: 14,
           color: color`.`
         })
         gameOver = true;
