@@ -9,6 +9,7 @@ https://sprig.hackclub.com/gallery/getting_started
 */
 
 
+
 // Settings
 const level_4_swap_interval_seconds = 1
 // 
@@ -190,7 +191,7 @@ setSolids([green, red, blue, purple, gold, brown])
 let level = 0
 const levels = [
   map`
-ssswwwbbb
+sssgggbbb
 ssswwwbbb
 ssswwwbbb
 wwwwwwwww
@@ -245,6 +246,42 @@ ggggggggggggg
 
 setMap(levels[level])
 
+const gameMelody = tune`
+500,
+500: C4~500,
+500: D4^500,
+500: E4-500,
+500: F4/500,
+500: G4~500,
+500: A4^500,
+500: B4-500,
+500: C5/500,
+500: D5~500,
+500: E5^500,
+500: F5-500,
+500: G5/500,
+500: A5~500,
+500: B5^500,
+500: A5-500,
+500: G5/500,
+500: F5~500,
+500: E5^500,
+500: D5-500,
+500: C5/500,
+500: B4~500,
+500: A4^500,
+500: G4-500,
+500: F4/500,
+500: E4~500,
+500: D4^500,
+500: C4-500,
+500: D4/500,
+500: E4~500,
+500: F4^500,
+500: G4-500`
+
+const playback = playTune(gameMelody,Infinity)
+
 setPushables({
   [player]: []
 })
@@ -252,10 +289,15 @@ setPushables({
   function setup(){
   addSprite(4, 2, player);
 
+
   addText("Difficulty", {
     x: 5,
     y: 8,
-    color: `.`
+    color: color`.`
+  })
+  addText("Mute", {
+    y: 1,
+    color: color`.`
   })
 
   addText("1", {
@@ -458,6 +500,12 @@ if(gameOver == true){
 
   function checkSelection() {
     const playerSprite = getFirst(player);
+    const greySprites = getAll(grey)
+    for (const greySprite of greySprites) {
+      if (playerSprite.x === greySprite.x && playerSprite.y === greySprite.y) {
+        playback.end()
+      }
+    }
     const greenSprites = getAll(green)
     for (const greenSprite of greenSprites) {
       if (playerSprite.x === greenSprite.x && playerSprite.y === greenSprite.y) {
@@ -881,4 +929,3 @@ if(gameOver == true){
     function resetSwapTimer(s) {
     clearInterval(swapInterval);
   }
-
