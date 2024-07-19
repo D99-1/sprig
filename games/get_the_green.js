@@ -539,6 +539,7 @@ if(gameOver == true){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer()
         clearText()
+      if(playerSprite.y !== 0){
       for(let i = 0; i < 13; i++){
         clearTile(i,0)
       }
@@ -547,6 +548,17 @@ if(gameOver == true){
           y: 1,
           color: color`.`
         })
+      } else{
+      for(let i = 0; i < 13; i++){
+        clearTile(i,1)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 2,
+          color: color`.`
+        })
+      }
+
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -601,7 +613,8 @@ if(gameOver == true){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer()
         clearText()
-              for(let i = 0; i < 13; i++){
+ if(playerSprite.y !== 0){
+      for(let i = 0; i < 13; i++){
         clearTile(i,0)
       }
         addText("Move to restart",{
@@ -609,6 +622,16 @@ if(gameOver == true){
           y: 1,
           color: color`.`
         })
+      } else{
+      for(let i = 0; i < 13; i++){
+        clearTile(i,1)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 2,
+          color: color`.`
+        })
+      }
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -663,7 +686,8 @@ if(gameOver == true){
       if (playerSprite.x === redSprite.x && playerSprite.y === redSprite.y && gameOver === false) {
         resetTimer(5)
         clearText()
-              for(let i = 0; i < 13; i++){
+  if(playerSprite.y !== 0){
+      for(let i = 0; i < 13; i++){
         clearTile(i,0)
       }
         addText("Move to restart",{
@@ -671,6 +695,16 @@ if(gameOver == true){
           y: 1,
           color: color`.`
         })
+      } else{
+      for(let i = 0; i < 13; i++){
+        clearTile(i,1)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 2,
+          color: color`.`
+        })
+      }
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -736,7 +770,8 @@ if(gameOver == true){
         resetTimer(5)
         resetSwapTimer()
         clearText()
-              for(let i = 0; i < 13; i++){
+     if(playerSprite.y !== 0){
+      for(let i = 0; i < 13; i++){
         clearTile(i,0)
       }
         addText("Move to restart",{
@@ -744,6 +779,16 @@ if(gameOver == true){
           y: 1,
           color: color`.`
         })
+      } else{
+      for(let i = 0; i < 13; i++){
+        clearTile(i,1)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 2,
+          color: color`.`
+        })
+      }
         addText("Game Over! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -779,7 +824,8 @@ if(gameOver == true){
       if (timer === 0) {
         clearInterval(countdownInterval);
         clearText()
-              for(let i = 0; i < 13; i++){
+    if(playerSprite.y !== 0){
+      for(let i = 0; i < 13; i++){
         clearTile(i,0)
       }
         addText("Move to restart",{
@@ -787,6 +833,16 @@ if(gameOver == true){
           y: 1,
           color: color`.`
         })
+      } else{
+      for(let i = 0; i < 13; i++){
+        clearTile(i,1)
+      }
+        addText("Move to restart",{
+          x: 3,
+          y: 2,
+          color: color`.`
+        })
+      }
         addText("Game OVER! Lvl " + ingameLevel, {
           x: 1,
           y: 14,
@@ -818,6 +874,7 @@ if(gameOver == true){
           addSprite(redSprite.x,redSprite.y,brown)
           redSprite.remove()
         }
+        checkGold()
         swapTimer(s)
       }
     }, 1000);
