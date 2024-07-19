@@ -8,6 +8,18 @@ https://sprig.hackclub.com/gallery/getting_started
 @addedOn: 2024-06-28
 */
 
+// Known BUGS:
+// Engine line 153: playerSprite is not defined
+// Level continues after you end
+// eg. - start game
+//     - reach level 10, 
+//	   - touch red, 
+//     - start new game, 
+//     - starts from level 11
+
+// Needed Feature:
+// Turn music back on after turning it off
+
 
 
 // Settings
