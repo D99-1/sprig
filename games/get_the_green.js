@@ -9,8 +9,6 @@ https://sprig.hackclub.com/gallery/getting_started
 */
 
 
-// NOTE: Make sure player is not on row being cleared
-
 // Settings
 const level_4_swap_interval_seconds = 1
 // 
